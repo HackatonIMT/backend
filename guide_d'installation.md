@@ -4,6 +4,10 @@
 ### Creer l'environement virtuel
 ```terminal
 python3 -m venv venv
+```
+
+### Utiliser l'environement virtuel
+```terminal
 source venv/bin/activate
 ```
 
@@ -59,4 +63,17 @@ from app import app
 * Créer un fichier .flaskenv avec  le contenu suivant
 ```terminal
 FLASK_APP=project.py
+```
+
+* Exécutez l'application avec la commande
+```terminal
+flask run
+```
+
+* Faire un requete GET à l'adresse http://localhost:5000/ avec le navigateur ou curl
+```terminal
+curl http://localhost:5000/
+
+OUTPUT:
+Hello, World!
 ```
