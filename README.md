@@ -50,9 +50,13 @@ sudo docker run -p 5000:5000 project
 
 ### Execution and Testing
 
-* Run the application with the command
+* Run the application. It can be run with the command
 ```terminal
 flask run
+```
+or the command 
+```terminal
+gunicorn --bind :5000 -w 1 project:app
 ```
 
 * Make a GET request to http://localhost:5000/ with the browser or with curl
