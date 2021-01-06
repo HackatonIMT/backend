@@ -3,6 +3,13 @@
 Backend project in Python and Flask for the Hackathon of January 2021. 
 
 ## Setup
+
+### Setup environment variables
+Create a file called .env with the OpenWeatherMap API Token. It should be defined as follows
+```terminal
+OWM_TOKEN=<Open weather API Token>
+```
+
 ### Option 1: Setup with requirements.txt
 * Setup Virtual Environment
 ```terminal
@@ -26,6 +33,7 @@ source venv/bin/activate
 pip install flask
 pip install python-dotenv
 pip install Flask-Cors
+pip install requests
 pip install gunicorn
 ```
 
