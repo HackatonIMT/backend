@@ -15,27 +15,39 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### Option 2: Setup from scratch
-* Creer l'environement virtuel
+* Setup Virtual Environment
 ```terminal
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-* Installer des packages
+* Install packages
 ```terminal
 pip install flask
 pip install python-dotenv
 pip install Flask-Cors
+pip install gunicorn
+```
+
+### Option 3: Setup with Docker
+* Build the project
+```terminal
+sudo docker build -t project .
+```
+
+* Run container
+```terminal
+sudo docker run -p 5000:5000 project
 ```
 
 ### Execution and Testing
 
-* Exécutez l'application avec la commande
+* Run the application with the command
 ```terminal
 flask run
 ```
 
-* Faire un requete GET à l'adresse http://localhost:5000/ avec le navigateur ou curl
+* Make a GET request to http://localhost:5000/ with the browser or with curl
 ```terminal
 curl http://localhost:5000/
 
