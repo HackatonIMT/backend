@@ -45,7 +45,7 @@ sudo docker build -t project .
 
 * Run container
 ```terminal
-sudo docker run -p 5000:5000 project
+sudo docker run -it -p 5000:5000 -e OWM_TOKEN=<OWM TOKEN> project
 ```
 
 ### Execution and Testing
