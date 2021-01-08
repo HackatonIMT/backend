@@ -2,22 +2,15 @@
 
 Backend en Python et Flask pour le Hackathon de janvier 2021. 
 
-<<<<<<< HEAD
 ## Configuration
-### Option 1 : Configuration de l'environnement avec requirements.txt
-* Mise en place d'un environnement virtuel
-=======
-## Setup
-
-### Setup environment variables
-Create a file called .env with the OpenWeatherMap API Token. It should be defined as follows
+### Configurer les variables d'environnement
+Créer un fichier appelé .env avec le TOKEN d'API OpenWeatherMap. Il doit être défini comme suit
 ```terminal
 OWM_TOKEN=<Open weather API Token>
 ```
 
-### Option 1: Setup with requirements.txt
-* Setup Virtual Environment
->>>>>>> d5edb408badfb12fa2f73e86bff151e4c04aa1d4
+### Option 1 : Configuration de l'environnement avec requirements.txt
+* Mise en place d'un environnement virtuel
 ```terminal
 python3 -m venv venv
 source venv/bin/activate
