@@ -4,9 +4,11 @@ Backend en Python et Flask pour le Hackathon de janvier 2021.
 
 ## Configuration
 ### Configurer les variables d'environnement
-Créer un fichier appelé .env avec le TOKEN d'API OpenWeatherMap. Il doit être défini comme suit
+Créer un fichier appelé .env. Il doit être défini comme suit
 ```terminal
 OWM_TOKEN=<Open weather API Token>
+GOOGLE_APPLICATION_CREDENTIALS=<path to the Account Key>
+PROJECT_ID=<DialogFlow project ID>
 ```
 
 ### Option 1 : Configuration de l'environnement avec requirements.txt
