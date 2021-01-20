@@ -7,4 +7,6 @@ CORS(app)
 
 dialogflow = Dialogflow()
 
+inscription_session = []
+
 from app import routes

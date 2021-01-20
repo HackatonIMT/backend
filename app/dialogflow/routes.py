@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app import dialogflow
 
 dialogflow_route = Blueprint('dialogflow', __name__)
@@ -19,7 +19,8 @@ def get_intent(intent_id):
     for message in intent.messages:
         messages += list(message.text.text)
     for training_phrase in intent.training_phrases:
-        training_phrases += list(training_phrase.text.text)
+        for part in training_phrase.parts:
+            training_phrases.append(part.text)
     output_data = {
         "name": intent.name,
         "display_name": intent.display_name,
@@ -35,3 +36,25 @@ def get_intent(intent_id):
 def delete_intent(intent_id):
     dialogflow.delete_intent(intent_id)
     return '', 204
+
+
+@dialogflow_route.route('/intents', methods=['POST'])
+def create_intent():
+    input_data = request.get_json()
+    intent = dialogflow.create_intent(input_data.get('display_name'), input_data.get('training_phrases'), input_data.get('messages'))
+    messages = []
+    training_phrases = []
+    for message in intent.messages:
+        messages += list(message.text.text)
+    for training_phrase in intent.training_phrases:
+        for part in training_phrase.parts:
+            training_phrases.append(part.text)
+    output_data = {
+        "name": intent.name,
+        "display_name": intent.display_name,
+        "training_phrases": training_phrases,
+        "messages": messages,
+        "action": intent.action,
+        "priority": intent.priority,
+    }  # TODO: add more data
+    return jsonify(output_data), 200
