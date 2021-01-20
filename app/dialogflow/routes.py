@@ -58,3 +58,29 @@ def create_intent():
         "priority": intent.priority,
     }  # TODO: add more data
     return jsonify(output_data), 200
+
+
+@dialogflow_route.route('/intents/<intent_id>', methods=['PUT'])
+def update_intent(intent_id):
+    input_data = request.get_json()
+    original_intent = dialogflow.get_intent(intent_id)
+    intent = dialogflow.update_intent(original_intent, input_data.get('display_name', ""),
+                                      input_data.get('training_phrases', []),
+                                      input_data.get('messages', []))
+    messages = []
+    training_phrases = []
+    for message in intent.messages:
+        messages += list(message.text.text)
+    for training_phrase in intent.training_phrases:
+        for part in training_phrase.parts:
+            training_phrases.append(part.text)
+
+    output_data = {
+        "name": intent.name,
+        "display_name": intent.display_name,
+        "training_phrases": training_phrases,
+        "messages": messages,
+        "action": intent.action,
+        "priority": intent.priority,
+    }  # TODO: add more data
+    return jsonify(output_data), 200
