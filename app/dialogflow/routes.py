@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import dialogflow
+from app.dialogflow.models import Intent
 
 dialogflow_route = Blueprint('dialogflow', __name__)
 
@@ -84,3 +85,8 @@ def update_intent(intent_id):
         "priority": intent.priority,
     }  # TODO: add more data
     return jsonify(output_data), 200
+
+
+# @dialogflow_route.route('/fix', methods=['GET'])
+# def fix_training_phrases():
+#     intents = { "0cdff40f-5126-4c99-9903-013c038a869a": ["25", "1", "le deuxième", "le premier et le deuxième", "choisis le premier et le deuxième"]}
