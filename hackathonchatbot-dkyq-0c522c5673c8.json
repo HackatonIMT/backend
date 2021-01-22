@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hackathonchatbot-dkyq",
+  "private_key_id": "0c522c5673c8c4c307eaf685d3a6ac09c3d0b1de",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6IhDjhn0P/v9Y\nrMi86cx2uMRvl8a0XOrfND2fsDSBSdmrZ5CbialOxtNApSMnAuFMDRMJ4CNrBPtM\nLF2ZdgR7JRrFRU/9tfXPAKBvBY72Sildub99Cdm+z4x5MRY5IuA5bWXVLSCFzM9b\nOX5RMv91vpKw/dTJm0gTspwDWLwWVTAE5NUYrTzA8bw8qXfcmIDlLnBnckLbVY9G\nA8kcV7MNVV8fgXDB8clcBsIlwbJXO/Tb3weAbOqhwpt8G2a21DKvB5jE0HHGOhgU\n0i/EyyZic2jkjokxDHm5kGJg78OloYcF+JR1uidsdw5JfHEA59xMYlRthjLUQnMy\n23wN7lKhAgMBAAECggEADdGQomuuJj1etLUjNA9BfEDsaIKCoIpTb52/w3a/9ydF\n7zlBnaKDPNN7BI4eBXvrwQspci6/Qmc8xuN2UXnXDFNtYN7r+OCE7sjToFpvyi4o\nUwqCwmQ0U7ux6J9x0G0b63eJO2Hdy8EwVcv3akzYdWPgHR7DKPKLz9aPSZpRYHDz\nJPn3fp/JF8fw77lG5w8vmXaUj1rIh5ZnRz4QafCqvZnqOo6mAvRzXQrcJ8g63drQ\nVHnm0GgzJfgMp56Hkp0Z/xPvZgxBab0Q369gLHxVMKOBxT4V6F4RqzePYeNZy/F7\nxmEI5ij4WW/EkxRtWKuHvevKeAGD+93mAxbL2DDWHwKBgQDok2yR0Jh1H1UYWPeu\nPVi06lVVsn2/kqOvpwr4dK4aKQUXmz7K3vyFLguHXgQjIX5npFyzPICKycLWh3y8\n+o5PskF85utAIc5MaFQBDrcqZBtjynUCinIUG0h3H8sQg7WIgxsalyinHWhjNNhS\nkbXTRHKpCXt6S7O0u64HQVReKwKBgQDM4TFQAnuNb2o/4qGF1fbqiqLoxz9JC6oe\nrD1CaLrzZwc7XSxw0YtcdkNa14E6Y7d9u4+7FfaNc88etV3N9B1yK68d/6PSRvox\nces8NuFOeDeI4+nZO6nj6AkeB/AuDYTHFpEC5VYZFRhmyz4aAnItky5XFds1r2uT\nt1ohU124YwKBgQCe5IlaHW7rJZrXZYDhc1v1Tds7DxTGGwLlcHQYRm7jxH6MIC4I\nH8vZmRmbQ+oDrlBTsoD6my0epLUOJ8ZavbsYS6peEM1MJUxx+xzZFBqjRX1I8fp6\n3+cMQY+CgyASikktmJSd2AOYGIlGrcXUs2PLkIndXnMTnECMC2Tb5BAlvQKBgCij\n4uxEEc4Uc7cIdZHex4PuzDHwlBUhQzWiZORvceYmYcDc0pvudP56VxIF/ZRfg15l\nfjVWPfoBJuyofVsFOXIUSEBjHVPw0GBOgKMJH9g48Isu6ow00ZZryKM0X+hCtjvn\ntgwlAdcn4BdD6aWvJobz0xVjOICFs4kxrac+qjCRAoGBANIJZyYbe5Shvff/4Gh7\nPNygWdahVUE/wBdBg8yKxN+2TBDQ1tG95jXs7HcPVK9PcuiQWPLcqc7IQyVotk7O\nd9x8SE1pC2gaKQrpG0xqDVMDp4ffZpmO3J7gFijFycmMAg6AjMDmPktUl4hV7IZP\nEJJ05kazh+MDYk5minw4ObCQ\n-----END PRIVATE KEY-----\n",
+  "client_email": "hackathonchatbot@hackathonchatbot-dkyq.iam.gserviceaccount.com",
+  "client_id": "103338934603255120160",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hackathonchatbot%40hackathonchatbot-dkyq.iam.gserviceaccount.com"
+}
