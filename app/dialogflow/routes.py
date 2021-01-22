@@ -222,6 +222,32 @@ def delete_phrase(intent_id, phrase_id):
     return jsonify(output_data), 200
 
 
+@dialogflow_route.route('/put_data', methods=['GET'])
+def put_data():
+    intents = dialogflow.get_intents()
+    for intent in intents:
+        mongo_intent = Intent()
+        mongo_intent.dialogflow_id = intent.name.split('/')[-1]
+        mongo_intent.display_name = intent.display_name
+        mongo_intent.action = intent.action
+        mongo_intent.priority = intent.priority
+        messages = []
+        training_phrases = []
+        parameters = []
+        for parameter in intent.parameters:
+            parameters.append(parameter.display_name)
+        mongo_intent.parameters = parameters
+        for message in intent.messages:
+            messages += list(message.text.text)
+        for training_phrase in intent.training_phrases:
+            for part in training_phrase.parts:
+                training_phrases.append(part.text)
+        mongo_intent.messages = [messages]
+        mongo_intent.training_phrases = training_phrases
+        mongo_intent.save()
+    # output_data = [{'id': intent.name.split('/')[-1], 'name': intent.name, 'display_name': intent.display_name} for intent in intents]
+    return "ok", 200
+
 @dialogflow_route.route('/fix', methods=['GET'])
 def fix_training_phrases():
     intents = {"0cdff40f-5126-4c99-9903-013c038a869a": ["25", "1", "le deuxième", "le premier et le deuxième", "choisis le premier et le deuxième",
