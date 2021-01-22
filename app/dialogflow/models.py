@@ -5,12 +5,12 @@ from app import db
 class Intent(db.Document):
     meta = {'collection': 'intent',  'indexes': ['dialogflow_id']}
     dialogflow_id = db.StringField(max_length=100, unique=True, required=True)
-    messages = db.ListField(db.ListField(db.StringField()))
-    training_phrases = db.ListField(db.StringField())
+    messages = db.ListField(db.ListField(db.StringField()), default=[])
+    training_phrases = db.ListField(db.StringField(), default=[])
     display_name = db.StringField(max_length=250)
     action = db.StringField(max_length=250)
     priority = db.IntField()
-    parameters = db.ListField(db.StringField(max_length=50))
+    parameters = db.ListField(db.StringField(max_length=50), default=[])
     # name = db.StringField(max_length=250)
     # created_at = db.DateTimeField(default=datetime.datetime.utcnow)
     # updated_at = db.DateTimeField(default=datetime.datetime.utcnow)

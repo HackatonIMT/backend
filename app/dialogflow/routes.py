@@ -75,9 +75,10 @@ def get_intent(intent_id):
         if aux_intent:
             training_phrases = aux_intent.training_phrases
     output_data = {"questions": [], "answers": []}
+    i = 0
     for phrase in training_phrases:
         output_data["questions"].append({
-            "id": intent.name.split('/')[-1],
+            "id": i,
             "name": intent.name,
             "display_name": intent.display_name,
             "training_phrases": phrase,
@@ -85,9 +86,11 @@ def get_intent(intent_id):
             "action": intent.action,
             "priority": intent.priority,
         })  # TODO: add more data
+        i += 1
+    i = 0
     for message in messages:
         output_data["answers"].append({
-            "id": intent.name.split('/')[-1],
+            "id": i,
             "name": intent.name,
             "display_name": intent.display_name,
             "training_phrases": "",
@@ -95,6 +98,7 @@ def get_intent(intent_id):
             "action": intent.action,
             "priority": intent.priority,
         })
+        i += 1
     return jsonify(output_data), 200
 
 
@@ -166,11 +170,12 @@ def update_intent(intent_id):
     return jsonify(output_data), 200
 
 
-@dialogflow_route.route('/intents/<intent_id>/message', methods=['DELETE'])
-def delete_message(intent_id):
-    input_data = request.get_json()
+@dialogflow_route.route('/intents/<intent_id>/message/<message_id>', methods=['DELETE'])
+def delete_message(intent_id, message_id):
+    input_data = request.args
+    print(input_data)
     original_intent = dialogflow.get_intent(intent_id)
-    intent = dialogflow.delete_message(original_intent, input_data.get('messages', ""))
+    intent = dialogflow.delete_message(original_intent, int(message_id))
     messages = []
     training_phrases = []
     for message in intent.messages:
@@ -191,11 +196,12 @@ def delete_message(intent_id):
     return jsonify(output_data), 200
 
 
-@dialogflow_route.route('/intents/<intent_id>/phrase', methods=['DELETE'])
-def delete_phrase(intent_id):
-    input_data = request.get_json()
+@dialogflow_route.route('/intents/<intent_id>/phrase/<phrase_id>', methods=['DELETE'])
+def delete_phrase(intent_id, phrase_id):
+    input_data = request.args
+    print(input_data)
     original_intent = dialogflow.get_intent(intent_id)
-    intent = dialogflow.delete_training_phrase(original_intent, input_data.get('training_phrases', ""))
+    intent = dialogflow.delete_training_phrase(original_intent, int(phrase_id))
     messages = []
     training_phrases = []
     for message in intent.messages:

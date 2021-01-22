@@ -81,15 +81,15 @@ class Dialogflow:
         old_intent.save()
         return response
 
-    def delete_message(self, original_intent, delete_message):
+    def delete_message(self, original_intent, message_id):
         old_intent = Intent.objects(dialogflow_id=original_intent.name.split('/')[-1]).first()
         messages = []
         for message in original_intent.messages:
             messages += list(message.text.text)
         print(messages)
-        print(delete_message)
+        print(message_id)
 
-        messages.remove(delete_message)
+        messages.pop(message_id)
         text = dialogflow_v2.Intent.Message.Text(text=messages)
         message = dialogflow_v2.Intent.Message(text=text)
         original_intent.messages = [message]
@@ -99,14 +99,14 @@ class Dialogflow:
         old_intent.save()
         return response
 
-    def delete_training_phrase(self, original_intent, delete_phrase):
+    def delete_training_phrase(self, original_intent, phrase_id):
         old_intent = Intent.objects(dialogflow_id=original_intent.name.split('/')[-1]).first()
 
         training_phrases = []
         training_phrases_parts = old_intent.training_phrases
         print(training_phrases_parts)
-        print(delete_phrase)
-        training_phrases_parts.remove(delete_phrase)
+        print(phrase_id)
+        training_phrases_parts.pop(phrase_id)
         for training_phrases_part in training_phrases_parts:
             part = dialogflow_v2.Intent.TrainingPhrase.Part(text=training_phrases_part)
             # Here we create a new training phrase for each provided part.
