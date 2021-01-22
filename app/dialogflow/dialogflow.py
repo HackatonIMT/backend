@@ -1,6 +1,7 @@
 from google.cloud import dialogflow_v2
 from google.protobuf import field_mask_pb2
 import os
+from app.dialogflow.models import Intent
 
 
 class Dialogflow:
@@ -46,14 +47,15 @@ class Dialogflow:
 
     def update_intent(self, original_intent, display_name, training_phrases_parts, message_texts):
         """Create an intent of the given intent type."""
-
+        old_intent = Intent.objects(dialogflow_id=original_intent.name.split('/')[-1]).first()
         updated_paths = []
         if display_name:
             original_intent.display_name = display_name
             updated_paths.append('display_name')
+            old_intent.display_name = display_name
         if training_phrases_parts:
             training_phrases = []
-            training_phrases_parts = [] + training_phrases_parts  # TODO: get old training phrase from database (Dialogflow is not returning them)
+            training_phrases_parts = old_intent.training_phrases + training_phrases_parts  # TODO: get old training phrase from database (Dialogflow is not returning them)
             for training_phrases_part in training_phrases_parts:
                 part = dialogflow_v2.Intent.TrainingPhrase.Part(text=training_phrases_part)
                 # Here we create a new training phrase for each provided part.
@@ -61,6 +63,7 @@ class Dialogflow:
                 training_phrases.append(training_phrase)
             original_intent.training_phrases = training_phrases
             updated_paths.append('training_phrases')
+            old_intent.training_phrases = training_phrases_parts
 
         if message_texts:
             messages = []
@@ -71,7 +74,48 @@ class Dialogflow:
             message = dialogflow_v2.Intent.Message(text=text)
             original_intent.messages = [message]
             updated_paths.append('messages')
+            old_intent.messages = [messages]
 
         update_mask = field_mask_pb2.FieldMask(paths=updated_paths)
         response = self.intents_client.update_intent(intent=original_intent, language_code='fr', update_mask=update_mask)
+        old_intent.save()
+        return response
+
+    def delete_message(self, original_intent, delete_message):
+        old_intent = Intent.objects(dialogflow_id=original_intent.name.split('/')[-1]).first()
+        messages = []
+        for message in original_intent.messages:
+            messages += list(message.text.text)
+        print(messages)
+        print(delete_message)
+
+        messages.remove(delete_message)
+        text = dialogflow_v2.Intent.Message.Text(text=messages)
+        message = dialogflow_v2.Intent.Message(text=text)
+        original_intent.messages = [message]
+        old_intent.messages = [messages]
+        update_mask = field_mask_pb2.FieldMask(paths=["messages"])
+        response = self.intents_client.update_intent(intent=original_intent, language_code='fr', update_mask=update_mask)
+        old_intent.save()
+        return response
+
+    def delete_training_phrase(self, original_intent, delete_phrase):
+        old_intent = Intent.objects(dialogflow_id=original_intent.name.split('/')[-1]).first()
+
+        training_phrases = []
+        training_phrases_parts = old_intent.training_phrases
+        print(training_phrases_parts)
+        print(delete_phrase)
+        training_phrases_parts.remove(delete_phrase)
+        for training_phrases_part in training_phrases_parts:
+            part = dialogflow_v2.Intent.TrainingPhrase.Part(text=training_phrases_part)
+            # Here we create a new training phrase for each provided part.
+            training_phrase = dialogflow_v2.Intent.TrainingPhrase(parts=[part])
+            training_phrases.append(training_phrase)
+        original_intent.training_phrases = training_phrases
+        old_intent.training_phrases = training_phrases_parts
+
+        update_mask = field_mask_pb2.FieldMask(paths=["training_phrases"])
+        response = self.intents_client.update_intent(intent=original_intent, language_code='fr', update_mask=update_mask)
+        old_intent.save()
         return response

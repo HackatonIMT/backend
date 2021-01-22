@@ -7,6 +7,52 @@ dialogflow_route = Blueprint('dialogflow', __name__)
 
 # DialogFlow has a bug in which it does not send the training phrases. For this, we obtain them from the database
 
+@dialogflow_route.route('/topics', methods=['GET'])
+def get_topics():
+    intents = dialogflow.get_intents()
+    topics = {}
+    for intent in intents:
+        if "Default" in intent.display_name or "test" in intent.display_name:
+            continue
+        data = intent.display_name.split(".")
+        if data[0] not in topics:
+            topics[data[0]] = {"subtopics": {}, }
+        if len(data) == 1:
+            # topics[data[0]]["subtopics"] =
+            topics[data[0]]["code"] = intent.name.split('/')[-1]
+        # if len(data) == 2:
+        #     topics[data[0]]["subtopics"].append({"topic": data[1], "subtopics": []})
+        if len(data) > 1:
+            # topics[data[0]]["subtopics"].append({"topic": data[1], "subtopics": ".".join(data[1:])})
+            topics[data[0]]["subtopics"][data[1]] = {"code": intent.name.split('/')[-1], "subtopics": []} #.append({"topic": data[1], "subtopics": ".".join(data[1:])})
+    output = []
+    for key, value in topics.items():
+        if value["subtopics"]:
+            aux = []
+            for sub_key, subtopic in value["subtopics"].items():
+                aux.append({"topic": sub_key.title(), "subs": [], "code": subtopic["code"]})
+            output.append({"topic": key.title(), "subs": aux})
+        else:
+            output.append({"topic": key.title(), "subs": [], "code": value["code"]})
+#         # subs = {}
+#         # for k, v in value.items():
+#         #     for j in v:
+#         #         if j['topic'] not in subs:
+#
+# # {'subtopics': [{'topic': 'inscription', 'subtopics': 'creation.choix2'}
+#         aux.append({"topic": key, **value})
+#         # if value["subtopics"]:
+#         #     output.append({"name": key, "subtopics": value})
+#     output = aux
+    # for key, subtopics in aux:
+    #     sub = {}
+    #     for subtopic in subtopics:
+    #         if subtopic["topic"] not in sub:
+    #             sub[subtopic["topic"]] = []
+
+    return jsonify({"topics": output})
+
+
 @dialogflow_route.route('/intents', methods=['GET'])
 def get_intents():
     intents = dialogflow.get_intents()
@@ -28,15 +74,27 @@ def get_intent(intent_id):
         aux_intent = Intent.objects(dialogflow_id=intent_id).first()
         if aux_intent:
             training_phrases = aux_intent.training_phrases
-    output_data = {
-        "id": intent.name.split('/')[-1],
-        "name": intent.name,
-        "display_name": intent.display_name,
-        "training_phrases": training_phrases,
-        "messages": messages,
-        "action": intent.action,
-        "priority": intent.priority,
-    }  # TODO: add more data
+    output_data = {"questions": [], "answers": []}
+    for phrase in training_phrases:
+        output_data["questions"].append({
+            "id": intent.name.split('/')[-1],
+            "name": intent.name,
+            "display_name": intent.display_name,
+            "training_phrases": phrase,
+            "messages": "",
+            "action": intent.action,
+            "priority": intent.priority,
+        })  # TODO: add more data
+    for message in messages:
+        output_data["answers"].append({
+            "id": intent.name.split('/')[-1],
+            "name": intent.name,
+            "display_name": intent.display_name,
+            "training_phrases": "",
+            "messages": message,
+            "action": intent.action,
+            "priority": intent.priority,
+        })
     return jsonify(output_data), 200
 
 
@@ -75,10 +133,69 @@ def create_intent():
 @dialogflow_route.route('/intents/<intent_id>', methods=['PUT'])
 def update_intent(intent_id):
     input_data = request.get_json()
+    print(input_data)
+    print(intent_id)
+    # return "", 204
     original_intent = dialogflow.get_intent(intent_id)
+    training_phrases = []
+    messages = []
+    if input_data.get('training_phrases'):
+        training_phrases = [input_data.get('training_phrases')]
+    if input_data.get('messages'):
+        messages = [input_data.get('messages')]
     intent = dialogflow.update_intent(original_intent, input_data.get('display_name', ""),
-                                      input_data.get('training_phrases', []),
-                                      input_data.get('messages', []))
+                                      training_phrases,
+                                      messages)
+    messages = []
+    training_phrases = []
+    for message in intent.messages:
+        messages += list(message.text.text)
+    for training_phrase in intent.training_phrases:
+        for part in training_phrase.parts:
+            training_phrases.append(part.text)
+
+    output_data = {
+        "id": intent.name.split('/')[-1],
+        "name": intent.name,
+        "display_name": intent.display_name,
+        "training_phrases": training_phrases,
+        "messages": messages,
+        "action": intent.action,
+        "priority": intent.priority,
+    }  # TODO: add more data
+    return jsonify(output_data), 200
+
+
+@dialogflow_route.route('/intents/<intent_id>/message', methods=['DELETE'])
+def delete_message(intent_id):
+    input_data = request.get_json()
+    original_intent = dialogflow.get_intent(intent_id)
+    intent = dialogflow.delete_message(original_intent, input_data.get('messages', ""))
+    messages = []
+    training_phrases = []
+    for message in intent.messages:
+        messages += list(message.text.text)
+    for training_phrase in intent.training_phrases:
+        for part in training_phrase.parts:
+            training_phrases.append(part.text)
+
+    output_data = {
+        "id": intent.name.split('/')[-1],
+        "name": intent.name,
+        "display_name": intent.display_name,
+        "training_phrases": training_phrases,
+        "messages": messages,
+        "action": intent.action,
+        "priority": intent.priority,
+    }  # TODO: add more data
+    return jsonify(output_data), 200
+
+
+@dialogflow_route.route('/intents/<intent_id>/phrase', methods=['DELETE'])
+def delete_phrase(intent_id):
+    input_data = request.get_json()
+    original_intent = dialogflow.get_intent(intent_id)
+    intent = dialogflow.delete_training_phrase(original_intent, input_data.get('training_phrases', ""))
     messages = []
     training_phrases = []
     for message in intent.messages:
