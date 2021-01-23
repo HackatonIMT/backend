@@ -22,7 +22,7 @@ class Dialogflow:
         credentials = service_account.Credentials.from_service_account_info(credentials_aux)
 
         self.intents_client = dialogflow_v2.IntentsClient(credentials=credentials)
-        self.intents_parent = dialogflow_v2.AgentsClient.agent_path(os.environ["PROJECT_ID"])
+        self.intents_parent = dialogflow_v2.AgentsClient(credentials=credentials).agent_path(os.environ["PROJECT_ID"])
 
 
     def get_intents(self):
