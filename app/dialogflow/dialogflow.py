@@ -12,7 +12,7 @@ class Dialogflow:
           "project_id": os.environ["PROJECT_ID"],
           "private_key_id": os.environ["PRIVATE_KEY_ID"],
           "private_key": os.environ["PRIVATE_KEY"],
-          "client_email": os.environ["CLIENT_EMAIL"],
+          "client_email": "haackathonchatbot@hackathonchatbot-dkyq.iam.gserviceaccount.com",
           "client_id": os.environ["CLIENT_ID"],
           "auth_uri": "https://accounts.google.com/o/oauth2/auth",
           "token_uri": "https://oauth2.googleapis.com/token",
