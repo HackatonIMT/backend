@@ -1,20 +1,13 @@
 from google.cloud import dialogflow_v2
 from google.protobuf import field_mask_pb2
-from google.oauth2 import service_account
 import os
 from app.dialogflow.models import Intent
-from config import Config
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class Dialogflow:
     def __init__(self):
-        credentials = service_account.Credentials.from_service_account_info(Config.CREDENTIALS)
-
-        self.intents_client = dialogflow_v2.IntentsClient(credentials=credentials)
-        self.intents_parent = dialogflow_v2.AgentsClient(credentials=credentials).agent_path(os.environ["PROJECT_ID"])
+        self.intents_client = dialogflow_v2.IntentsClient()
+        self.intents_parent = dialogflow_v2.AgentsClient().agent_path(os.environ["PROJECT_ID"])
 
     def get_intents(self):
         intents = self.intents_client.list_intents(request={'parent': self.intents_parent})
