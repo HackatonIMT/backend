@@ -20,6 +20,7 @@ class Dialogflow:
           "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
           "client_x509_cert_url": os.environ["CLIENT_CERT"]
         }
+        print(f"\nMY PRINT: {os.environ['PROJECT_ID']}\n")
         credentials = service_account.Credentials.from_service_account_info(credentials_aux)
 
         self.intents_client = dialogflow_v2.IntentsClient(credentials=credentials)
