@@ -6,9 +6,14 @@ Backend en Python et Flask pour le Hackathon de janvier 2021.
 ### Configurer les variables d'environnement
 Créer un fichier appelé .env. Il doit être défini comme suit
 ```terminal
-GOOGLE_APPLICATION_CREDENTIALS=<path to the Account Key>
-PROJECT_ID=<DialogFlow project ID>
 MONGO_DATABASE_URL=mongodb://<username>:<password>@localhost:27017/<database_name>
+PROJECT_ID=<DialogFlow project ID>
+PRIVATE_KEY_ID=<DialogFlow private key ID>
+PRIVATE_KEY=<DialogFlow private key>
+CLIENT_EMAIL=<DialogFlow client email>
+CLIENT_ID=<DialogFlow client ID>
+CLIENT_CERT=<DialogFlow client cert>
+
 ```
 
 ### Option 1 : Configuration de l'environnement avec requirements.txt
