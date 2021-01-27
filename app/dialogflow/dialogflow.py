@@ -2,26 +2,14 @@ from google.cloud import dialogflow_v2
 from google.protobuf import field_mask_pb2
 import os
 from google.oauth2 import service_account
+from config import Config
 
 from app.dialogflow.models import Intent
 
 
 class Dialogflow:
     def __init__(self):
-        credentials_aux = {
-          "type": "service_account",
-          "project_id": os.environ["PROJECT_ID"],
-          "private_key_id": os.environ["PRIVATE_KEY_ID"],
-          "private_key": os.environ["PRIVATE_KEY"].replace('\\n', '\n'),
-          "client_email": os.environ["CLIENT_EMAIL"],
-          "client_id": os.environ["CLIENT_ID"],
-          "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-          "token_uri": "https://oauth2.googleapis.com/token",
-          "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-          "client_x509_cert_url": os.environ["CLIENT_CERT"]
-        }
-        print(f"\nMY PRINT: {os.environ['PROJECT_ID']}\n")
-        credentials = service_account.Credentials.from_service_account_info(credentials_aux)
+        credentials = service_account.Credentials.from_service_account_info(Config.CREDENTIALS)
 
         self.intents_client = dialogflow_v2.IntentsClient(credentials=credentials)
         self.intents_parent = dialogflow_v2.AgentsClient(credentials=credentials).agent_path(os.environ["PROJECT_ID"])
